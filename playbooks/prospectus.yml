@@ -1,0 +1,14 @@
+- name: Deploy edX Prospectus Service
+  hosts: all
+  become: True
+  gather_facts: True
+  vars:
+    ENABLE_DATADOG: False
+    ENABLE_NEWRELIC: False
+    CLUSTER_NAME: 'prospectus'
+  roles:
+    - aws
+    - role: nginx
+      nginx_default_sites:
+        - prospectus
+    - prospectus

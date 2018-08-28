@@ -1,0 +1,61 @@
+---
+#
+# edX Configuration
+#
+# github:     https://github.com/edx/configuration
+# wiki:       https://openedx.atlassian.net/wiki/display/OpenOPS
+# code style: https://openedx.atlassian.net/wiki/display/OpenOPS/Ansible+Code+Conventions
+# license:    https://github.com/edx/configuration/blob/master/LICENSE.TXT
+#
+##
+# Defaults for role credentials
+#
+
+
+#
+# vars are namespace with the module name.
+#
+credentials_service_name: 'credentials'
+
+credentials_environment:
+  CREDENTIALS_CFG: '{{ COMMON_CFG_DIR }}/{{ credentials_service_name }}.yml'
+
+credentials_gunicorn_port: 8150
+
+#
+# OS packages
+#
+
+credentials_debian_pkgs:
+  # Needed to manipulate images.
+  - libjpeg8-dev
+  - libpng12-dev
+
+credentials_redhat_pkgs: []
+
+CREDENTIALS_NGINX_PORT: '1{{ credentials_gunicorn_port }}'
+CREDENTIALS_SSL_NGINX_PORT: '4{{ credentials_gunicorn_port }}'
+
+CREDENTIALS_DEFAULT_DB_NAME: 'credentials'
+CREDENTIALS_MYSQL_HOST: 'localhost'
+# MySQL usernames are limited to 16 characters
+CREDENTIALS_MYSQL_USER: 'credentials001'
+CREDENTIALS_MYSQL_PASSWORD: 'password'
+
+CREDENTIALS_MEMCACHE: [ 'memcache' ]
+
+CREDENTIALS_DJANGO_SETTINGS_MODULE: 'credentials.settings.production'
+CREDENTIALS_DOMAIN: 'credentials'
+CREDENTIALS_URL_ROOT: 'http://{{ CREDENTIALS_DOMAIN }}:{{ CREDENTIALS_NGINX_PORT }}'
+CREDENTIALS_LOGOUT_URL: '{{ CREDENTIALS_URL_ROOT }}/logout/'
+
+CREDENTIALS_SECRET_KEY: 'SET-ME-TO-A-UNIQUE-LONG-RANDOM-STRING'
+CREDENTIALS_LANGUAGE_CODE: 'en'
+CREDENTIALS_LANGUAGE_COOKIE_NAME: 'openedx-language-preference'
+
+# Used to automatically configure OAuth2 Client
+CREDENTIALS_SOCIAL_AUTH_EDX_OIDC_KEY: 'credentials-key'
+CREDENTIALS_SOCIAL_AUTH_EDX_OIDC_SECRET: 'credentials-secret'
+CREDENTIALS_SOCIAL_AUTH_REDIRECT_IS_HTTPS: false
+
+CREDENTIALS_SERVICE_USER: 'credentials_service_user'
